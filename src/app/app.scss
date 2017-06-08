@@ -1,0 +1,70 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+
+
+
+// App Global Sass
+// --------------------------------------------------
+
+// Feat android transparent status bar
+// Set padding-top and default bg-color for status bar
+
+.platform-android {
+  .ion-page {
+    ion-header {
+      padding-top: $cordova-md-statusbar-padding;
+      background-color: color($colors, primary);
+    }
+  }
+}
+
+// Super bar placeholder
+
+%super-bar {
+  .scroll-content {
+    margin-top: 0 !important;
+  }
+
+  ion-header, .toolbar-background {
+    background-color: initial !important;
+    transition: background-color 1s ease;
+
+    &:after {
+      height: 0  !important;
+    }
+  }
+
+  .opaque {
+    background-color: color($colors, primary) !important;
+
+    &:after {
+      height: 5px !important;
+    }
+
+    .toolbar-background {
+      background-color: color($colors, primary);
+    }
+  }
+}
+
+
+.loading {
+  text-align: center;
+  margin-top: calc(25vh);
+}
+

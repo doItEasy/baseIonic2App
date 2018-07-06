@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Tabs } from 'ionic-angular';
 
-import { HomePage } from '../home/home';
+import { Tab2Page } from '../tab2/tab2';
 import { NewsPage } from '../news/news';
+import { MycenterPage } from '../mycenter/mycenter';
 
 
 @Component({
@@ -13,9 +14,9 @@ export class TabsPage {
 
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = HomePage;
-  tab2Root: any = NewsPage;
-  tab3Root: any = HomePage;
+  tab1Root: any = NewsPage;
+  tab2Root: any = Tab2Page;
+  tab3Root: any = MycenterPage;
 
   constructor() {
 

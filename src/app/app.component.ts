@@ -1,11 +1,14 @@
 import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform, ToastController} from 'ionic-angular';
+import {Nav, Platform, ToastController,MenuController,Events} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {HomePage} from '../pages/home/home';
 import {Page1Page} from '../pages/home/page1/page1';
 import {TabsPage} from '../pages/tabs/tabs';
+
+import {ZhiHuAPI} from '../providers/zhihuAPI'
+
 
 @Component({
     templateUrl: 'app.html'
@@ -15,20 +18,27 @@ export class MyApp {
 
     rootPage: any = TabsPage;
 
-    pages: Array<{title: string, component: any}>;
+    list: any;
     backButtonPressed: boolean = false;
 
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
+                public zhiHuAPI:ZhiHuAPI,
+                public menuCtrl: MenuController,
+                public events: Events,
                 public splashScreen: SplashScreen,
                 public toastCtrl: ToastController) {
         this.initializeApp();
 
-        // used for an example of ngFor and navigation
-        this.pages = [
-            {title: 'Home', component: HomePage},
-            {title: 'List', component: Page1Page}
-        ];
+        this.zhiHuAPI.getTopics().then(data=>{
+            console.log("**********************"+JSON.stringify(data));
+            this.list=data['others'];
+
+        },err=>{
+
+        });
+
+
 
     }
 
@@ -36,8 +46,9 @@ export class MyApp {
         this.platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            // this.statusBar.styleDefault();
+
             this.splashScreen.hide();
+            this.statusBar.styleLightContent();
         });
         this.platform.registerBackButtonAction((): any => {
             let activeVC = this.nav.getActive();
@@ -76,9 +87,18 @@ export class MyApp {
         }
     }
 
-    openPage(page) {
+    openPage(id?) {
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
-        this.nav.setRoot(page.component);
+        // this.nav.setRoot(page.component);
+
+        if(!!id){
+            this.events.publish('changeType', id);
+        }else{
+            this.events.publish('home');
+        }
+
+        this.menuCtrl.close();
+
     }
 }

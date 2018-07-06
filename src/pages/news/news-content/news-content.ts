@@ -12,10 +12,12 @@ export class NewsContentPage {
   id: String;
   content: any;
   hasErr: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public zhiHuAPI: ZhiHuAPI,
-    public menuCtrl: MenuController, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public zhiHuAPI: ZhiHuAPI,
+              public menuCtrl: MenuController,
+              public toastCtrl: ToastController) {
     this.id = this.navParams.get('id');
-    this.menuCtrl.swipeEnable(false);
   }
   ionViewWillLeave() {
 
@@ -28,7 +30,7 @@ export class NewsContentPage {
   }
   initData() {
     this.hasErr = null;
-    this.zhiHuAPI.getZhihuContent(this.id).then(res => {
+    this.zhiHuAPI.getNewsById(this.id).then(res => {
       this.content = res;
     }, err => {
       this.hasErr = err;

@@ -5,6 +5,7 @@ import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 //ionic native
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import {Device} from '@ionic-native/device';
 
 
 //page
@@ -15,13 +16,17 @@ import {TabsPage} from '../pages/tabs/tabs';
 import {NewsPage} from '../pages/news/news';
 import {NewsContentPage} from '../pages/news/news-content/news-content';
 
+
 //module
-
 import {UploadModule,HttpExtModule} from 'base4ionic'
-
+import {MycenterPageModule} from '../pages/mycenter/mycenter.module'
+import {Tab2PageModule} from '../pages/tab2/tab2.module'
 
 //provider
 import {ZhiHuAPI} from '../providers/zhihuAPI';
+import {CnodeAPI} from '../providers/cnodeAPI';
+import { NativePageTransitions} from '@ionic-native/native-page-transitions';
+
 
 
 @NgModule({
@@ -37,9 +42,11 @@ import {ZhiHuAPI} from '../providers/zhihuAPI';
         BrowserModule,
         UploadModule,
         HttpExtModule,
+        MycenterPageModule,
+        Tab2PageModule,
         IonicModule.forRoot(MyApp, {
             tabsHideOnSubPages: true,
-            swipeBackEnabled: false,
+            swipeBackEnabled: true,
             iconMode: 'ios',
             modalEnter: 'modal-slide-in',
             modalLeave: 'modal-slide-out',
@@ -51,6 +58,10 @@ import {ZhiHuAPI} from '../providers/zhihuAPI';
                     activator: 'none'
                 }
             }
+        }, {
+            links: [
+                {component:NewsContentPage,loadChildren:"",name:"newsContent",segment:"news/:id",defaultHistory:[],priority:""}
+            ]
         })
     ],
     bootstrap: [IonicApp],
@@ -65,8 +76,11 @@ import {ZhiHuAPI} from '../providers/zhihuAPI';
     providers: [
         StatusBar,
         SplashScreen,
+        NativePageTransitions,
+        Device,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        ZhiHuAPI
+        ZhiHuAPI,
+        CnodeAPI
     ]
 })
 export class AppModule {

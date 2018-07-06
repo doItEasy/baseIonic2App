@@ -1,0 +1,42 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color="primary">
+    <ion-title class="toolbar-md-title-text-align">cnode社区</ion-title>
+  </ion-navbar>
+  <ion-toolbar color="light">
+    <ion-segment class="top_segment"  [(ngModel)]="topicParams.tab">
+      <ion-segment-button (click)="selectTab('0')" value="all" >
+        全部
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('1')" value="good">
+        精华
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('2')" value="share" >
+        分享
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('3')" value="ask" >
+        问答
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('4')" value="job" >
+        招聘
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content has-bouncing="false">
+
+  <ion-slides (ionSlideDidChange)="ionSlideDidChange($event)" #mySlider >
+    <ion-slide  *ngFor="let item of topicList;let i=index">
+
+      <ion-scroll scrollY="true" class="fixed-content">
+        <cnode-view [data]="topicList[i]"> </cnode-view>
+        <ion-infinite-scroll (ionInfinite)="loadMore(i,$event)" threshold="100px">
+          <ion-infinite-scroll-content   loadingSpinner="bubbles"
+                                         loadingText="Loading ..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-scroll>
+    </ion-slide>
+  </ion-slides>
+
+
+</ion-content>

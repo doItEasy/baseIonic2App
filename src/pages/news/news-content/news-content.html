@@ -6,24 +6,15 @@
 
 </ion-header>
 
-<ion-content *ngIf="!content">
-    <div *ngIf="!hasErr" class="loading">
-        <ion-spinner name="bubbles"></ion-spinner>
-    </div>
-    <div *ngIf="hasErr">
-        <div class="loading" (click)="initData()">
-            <img src="assets/image/404.png" style="width:50%">
-        </div>
-    </div>
-</ion-content>
-<ion-content *ngIf="content" elastic-header>
-    <div class="background-image" [ngStyle]="{'background-image':'url(' + content.image + ')'}">
+
+<ion-content >
+    <div *ngIf="content" class="background-image" [ngStyle]="{'background-image':'url(' + content.image + ')'}">
         <div class="background-content">
             <h2>{{content.title}}</h2>
             <p>{{content.image_source}}</p>
         </div>
     </div>
-    <div class="zhihu-content" [innerHtml]="content.body"></div>
+    <div *ngIf="content" class="zhihu-content" [innerHtml]="content.body"></div>
     <ion-fab right bottom>
         <button ion-fab color="primary" mini><ion-icon name="ios-send"></ion-icon></button>
         <ion-fab-list side="top">
@@ -33,4 +24,13 @@
             <button ion-fab (click)="shareContent('QQ',content)"><i color="primary" class="iconfont icon-QQ"></i></button>
         </ion-fab-list>
     </ion-fab>
+
+    <div *ngIf="!hasErr" class="loading">
+        <ion-spinner name="bubbles"></ion-spinner>
+    </div>
+    <div *ngIf="hasErr">
+        <div class="loading" (click)="initData()">
+        <img src="assets/image/404.png" style="width:50%">
+        </div>
+    </div>
 </ion-content>

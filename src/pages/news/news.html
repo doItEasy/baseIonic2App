@@ -1,12 +1,28 @@
-<ion-header>
+<!--<ion-header>-->
+    <!--<ion-navbar color="primary">-->
+        <!--<button ion-button menuToggle>-->
+      <!--<ion-icon name="menu"></ion-icon>-->
+    <!--</button>-->
+        <!--<ion-title>新闻</ion-title>-->
+    <!--</ion-navbar>-->
+<!--</ion-header>-->
+
+
+<ion-header [class.opaque]="showToolbar">
+
     <ion-navbar color="primary">
         <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-        <ion-title>阅读</ion-title>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+
+        <ion-title [hidden]="!showToolbar">
+            新闻
+        </ion-title>
     </ion-navbar>
+
 </ion-header>
-<ion-content>
+
+<ion-content class="content" (ionScroll)="onScroll($event)">
   <ion-refresher (ionRefresh)="refresh($event)" [pullMin]="60" [pullMax]="200">
     <ion-refresher-content
       pullingIcon="arrow-down"
@@ -19,26 +35,40 @@
     <div *ngIf="!dataFinish" class="loading">
         <ion-spinner name="bubbles"></ion-spinner>
     </div>
-    <div *ngIf="dataFinish">
+    <div *ngIf="dataFinish&&zhihuList">
 
-        <ion-slides autoplay="2000" loop="true" pager="true">
+        <ion-slides  *ngIf="zhihuList.top_stories"  autoplay="2000" loop="true" pager="true">
             <ion-slide *ngFor="let topic of zhihuList.top_stories" (click)="pushContent(topic.id)">
                 <div class="zhihu-header" [ngStyle]="{'background-image':'url(' + topic.image + ')'}">
-                    <h2>{{topic.title}}</h2>
+                    <h3>{{topic.title}}</h3>
                 </div>
             </ion-slide>
         </ion-slides>
-        <ion-list>
-            <ion-card *ngFor="let item of zhihuList.stories" id="newsCard">
+
+        <div *ngIf="zhihuList.background"  class="zhihu-header" [ngStyle]="{'background-image':'url(' + zhihuList.background + ')'}">
+            <h3>
+                <p>{{zhihuList.description}}</p>
+                <p>{{zhihuList.name}}</p>
+            </h3>
+        </div>
+
+        <ion-list *ngIf="zhihuList.stories">
+            <ion-card *ngFor="let item of zhihuList.stories">
                 <ion-item text-wrap (click)="pushContent(item.id)">
-                    <ion-thumbnail item-left>
-                        <img [src]="item.images[0]">
+                    <ion-thumbnail item-left *ngIf="item.images">
+                        <img *ngIf="zhihuList" [src]="item.images[0]">
                     </ion-thumbnail>
                     <h2>{{item.title}}</h2>
                 </ion-item>
             </ion-card>
 
         </ion-list>
+
+
+
+
+
+
         <ion-infinite-scroll (ionInfinite)="getMoreZhihuList($event)">
             <ion-infinite-scroll-content loadingText="加载中..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>

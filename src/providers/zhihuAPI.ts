@@ -6,23 +6,25 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ZhiHuAPI {
   data: any;
+  url:any = "http://news-at.zhihu.com";
+  // url:any="http://192.168.5.142:8888";
   constructor(public http: Http) {
 
   }
 
-  getZhihuLatest() {
+  getNews() {
     return new Promise((resolve, reject) => {
-      this.http.get('http://news-at.zhihu.com/api/4/news/latest').subscribe(res => {
-        this.data = res.json();
-        resolve(this.data);
-      }, err => {
-        reject(err);
-      });
+        this.http.get(this.url+'/api/4/news/latest').subscribe(res => {
+            this.data = res.json();
+            resolve(this.data);
+        }, err => {
+          reject(err);
+        });
     })
   }
-  getZhihuBefore(date) {
+  getNewsByDate(date) {
     return new Promise((resolve, reject) => {
-      this.http.get('http://news-at.zhihu.com/api/4/news/before/' + date).subscribe(res => {
+      this.http.get(this.url+'/api/4/news/before/' + date).subscribe(res => {
         this.data = res.json().stories;
         resolve(this.data);
       }, err => {
@@ -30,9 +32,9 @@ export class ZhiHuAPI {
       });
     })
   }
-  getZhihuContent(id) {
+  getNewsById(id) {
     return new Promise((resolve, reject) => {
-      this.http.get('http://news-at.zhihu.com/api/4/news/' + id).subscribe(res => {
+      this.http.get(this.url+'/api/4/news/' + id).subscribe(res => {
         this.data = res.json();
         resolve(this.data);
       }, err => {
@@ -40,4 +42,60 @@ export class ZhiHuAPI {
       });
     })
   }
+
+
+  getNewsInfoById( id ) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url+'/api/4/story-extra?id='+id).subscribe(res => {
+        this.data = res.json();
+        resolve(this.data);
+      }, err => {
+        reject(err);
+      });
+    })
+
+  }
+
+  getTopics() {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url+'/api/4/themes').subscribe(res => {
+        this.data = res.json();
+        resolve(this.data);
+      }, err => {
+        reject(err);
+      });
+    })
+  }
+  getTopicsById( topicid ) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url+'/api/4/theme/'+ topicid).subscribe(res => {
+        this.data = res.json();
+        resolve(this.data);
+      }, err => {
+        reject(err);
+      });
+    })
+  }
+  getSections() {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url+'/api/3/sections').subscribe(res => {
+        this.data = res.json();
+        resolve(this.data);
+      }, err => {
+        reject(err);
+      });
+    })
+  }
+  getSectionsById( sectionid ) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url+'/api/3/section?sectionid='+sectionid).subscribe(res => {
+        this.data = res.json();
+        resolve(this.data);
+      }, err => {
+        reject(err);
+      });
+    })
+
+  }
+
 }
